@@ -263,23 +263,15 @@ class Net(pl.LightningModule):
         traj_eval = traj_eval.cpu().numpy()
         pi_eval = pi_eval.cpu().numpy()
         eval_id = list(compress(list(chain(*data['agent']['id'])), eval_mask))
-        his_t = torch.tensor(data['agent']['target'][:, :self.num_historical_steps, :self.output_dim])[
-            eval_mask].cpu().numpy()
-        assistance_his_traj = pred['assistance_his_loc'][..., :self.output_dim][eval_mask].cpu().numpy()
         if isinstance(data, Batch):
             for i in range(data.num_graphs):
                 self.test_predictions[data['scenario_id'][i]] = (pi_eval[i], {eval_id[i]: traj_eval[i]})
-                self.his_val[data['scenario_id'][i]] = (his_t[i], assistance_his_traj[i])
         else:
             self.test_predictions[data['scenario_id']] = (pi_eval[0], {eval_id[0]: traj_eval[0]})
-            self.his_val[data['scenario_id']] = (his_t[0], assistance_his_traj[0])
 
     def on_test_end(self):
-        if self.dataset == 'argoverse_v2':
-            ChallengeSubmission(self.test_predictions).to_parquet(
-                Path(self.submission_dir) / f'{self.submission_file_name}.parquet')
-        else:
-            raise ValueError('{} is not a valid dataset'.format(self.dataset))
+        ChallengeSubmission(self.test_predictions).to_parquet(
+            Path(self.submission_dir) / f'{self.submission_file_name}.parquet')
 
     def configure_optimizers(self):
         decay = set()
@@ -318,7 +310,7 @@ class Net(pl.LightningModule):
 
     @staticmethod
     def add_model_specific_args(parent_parser):
-        parser = parent_parser.add_argument_group('QCNet')
+        parser = parent_parser.add_argument_group('HiMAP')
         parser.add_argument('--input_dim', type=int, default=2)
         parser.add_argument('--hidden_dim', type=int, default=128)
         parser.add_argument('--output_dim', type=int, default=2)
@@ -346,4 +338,5 @@ class Net(pl.LightningModule):
         parser.add_argument('--pred_his_timestep', type=int, default=30)
         parser.add_argument('--submission_dir', type=str, default='./')
         parser.add_argument('--submission_file_name', type=str, default='submission')
+
         return parent_parser

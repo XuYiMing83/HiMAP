@@ -1,7 +1,7 @@
 from typing import Callable, Optional
 import pytorch_lightning as pl
 from torch_geometric.loader import DataLoader
-from Datasets.dataset import STID2Dataset
+from Datasets.dataset import HiMAPDataset
 from transforms import TargetBuilder
 class HiMAPDataModule(pl.LightningDataModule):
 

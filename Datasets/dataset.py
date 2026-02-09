@@ -3,13 +3,13 @@ from torch_geometric.data import HeteroData
 import os
 import zlib
 import pickle
-class STID2Dataset(Dataset):
+class HiMAPDataset(Dataset):
     def __init__(self,
                  root= '/mnt/d/av2_data/',
                  processed = 'HiMAP',
                  split='train',
                  transform=None):
-        super(STID2Dataset, self).__init__(root=root, transform=transform)
+        super(HiMAPDataset, self).__init__(root=root, transform=transform)
         self._num_samples = {
             'train': 199908,
             'val': 24988,
@@ -27,3 +27,4 @@ class STID2Dataset(Dataset):
         data_compress = self.ex_list[idx]
         instance = pickle.loads(zlib.decompress(data_compress))
         return HeteroData(instance)
+

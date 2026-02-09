@@ -6,7 +6,8 @@ Instead of relying on track IDs or tracker intermediates (e.g., affinity matrice
 ---
 
 ### Pipeline
-![](<img width="2317" height="698" alt="pipeline" src="https://github.com/user-attachments/assets/2922dbe4-7201-4304-aaa2-d7dc8878c755" />)
+![](<img width="2317" height="698" alt="pipeline" src="https://github.com/user-attachments/assets/2ebc901a-beab-412f-836a-9922f5b8a589" />
+)
 
 ---
 

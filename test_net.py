@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 import torch
 import pytorch_lightning as pl
 from torch_geometric.loader import DataLoader
-from Datasets.dataset import STID2Dataset
+from Datasets.dataset import HiMAPDataset
 from HiMAP.himap import Net
 from transforms import TargetBuilder
 import warnings
@@ -23,9 +23,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     model = Net(**vars(args))
     model.load_state_dict(torch.load(args.ckpt_path))
-    val_dataset = STID2Dataset(root=args.root, split='test',
+    val_dataset = HiMAPDataset(root=args.root, split='test',
                      transform=TargetBuilder(model.num_historical_steps, model.num_future_steps))
     dataloader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers,
                             pin_memory=args.pin_memory, persistent_workers=args.persistent_workers)
     trainer = pl.Trainer(accelerator=args.accelerator, devices=args.devices, strategy='ddp')
+
     trainer.test(model, dataloader)

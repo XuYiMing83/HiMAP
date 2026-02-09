@@ -6,7 +6,7 @@ Instead of relying on track IDs or tracker intermediates (e.g., affinity matrice
 ---
 
 ### Pipeline
-![](./pipeline.png>)
+![Pipeline](./pipeline.png)
 
 ---
 
